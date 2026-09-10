@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Page</title>
+
+    <style>
+
+        body{
+            margin:0;
+            font-family:Arial, sans-serif;
+            background:#f4f4f4;
+        }
+
+        header{
+            background:#0d6efd;
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
+
+        nav{
+            background:#084298;
+            padding:15px;
+            text-align:center;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            margin:15px;
+            font-weight:bold;
+        }
+
+        nav a:hover{
+            color:yellow;
+        }
+
+        .container{
+            width:90%;
+            margin:30px auto;
+            display:flex;
+            flex-wrap:wrap;
+            gap:20px;
+        }
+
+        .property-card{
+            background:white;
+            width:300px;
+            border-radius:10px;
+            box-shadow:0 5px 10px rgba(0,0,0,0.2);
+            overflow:hidden;
+        }
+
+        .property-card img{
+            width:100%;
+            height:200px;
+            object-fit:cover;
+        }
+
+        .details{
+            padding:20px;
+        }
+
+        .details h2{
+            color:#0d6efd;
+        }
+
+        .details p{
+            line-height:1.5;
+        }
+
+        .price{
+            color:green;
+            font-size:18px;
+            font-weight:bold;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            background:#0d6efd;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#084298;
+        }
+
+        footer{
+            background:#222;
+            color:white;
+            text-align:center;
+            padding:15px;
+            margin-top:40px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+    <h1>Rental Management System</h1>
+    <p>Available Properties</p>
+</header>
+
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="property.html">Properties</a>
+    <a href="booking.html">Booking</a>
+    <a href="payment.html">Payment</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+
+
+<div class="container">
+
+
+    <div class="property-card">
+
+        <img src="apartment.jpg" alt="Apartment">
+
+        <div class="details">
+
+            <h2>Luxury Apartment</h2>
+
+            <p><b>Location:</b> Kampala</p>
+
+            <p><b>Bedrooms:</b> 2 Bedrooms</p>
+
+            <p><b>Status:</b> Available</p>
+
+            <p class="price">
+                UGX 800,000 / Month
+            </p>
+
+            <button>Book Now</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="property-card">
+
+        <img src="house.jpg" alt="House">
+
+        <div class="details">
+
+            <h2>Family House</h2>
+
+            <p><b>Location:</b> Wakiso</p>
+
+            <p><b>Bedrooms:</b> 3 Bedrooms</p>
+
+            <p><b>Status:</b> Available</p>
+
+            <p class="price">
+                UGX 1,500,000 / Month
+            </p>
+
+            <button>Book Now</button>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="property-card">
+
+        <img src="room.jpg" alt="Room">
+
+        <div class="details">
+
+            <h2>Single Room</h2>
+
+            <p><b>Location:</b> Mukono</p>
+
+            <p><b>Type:</b> Self Contained</p>
+
+            <p><b>Status:</b> Available</p>
+
+            <p class="price">
+                UGX 350,000 / Month
+            </p>
+
+            <button>Book Now</button>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<footer>
+
+<p>
+&copy; 2026 Rental Management System | All Rights Reserved
+</p>
+
+</footer>
+
+
+</body>
+
+</html>

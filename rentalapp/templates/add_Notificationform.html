@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#notificationModal">
+    Add Notification
+</button>
+
+<br><br>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Message</th>
+            <th>Is Read</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for notification in notifications %}
+        <tr>
+            <td>{{ notification.user }}</td>
+            <td>{{ notification.message }}</td>
+            <td>{{ notification.is_read }}</td>
+            <td>{{ notification.created_at }}</td>
+            <td>
+                <a href="{% url 'edit_Notification_page' notification.id %}" class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <a href="{% url 'delete_Notification_page' notification.id %}" class="btn btn-danger btn-sm">
+                    Delete
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No notifications found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Notification Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" >Add Notification</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <button type="submit" class="btn btn-success">
+                        Send Notification
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

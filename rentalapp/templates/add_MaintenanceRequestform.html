@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#maintenanceRequestModal">
+    Add Maintenance Request
+</button>
+
+<br><br>
+
+<hr>
+
+<h2>Maintenance Request List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>tenant</th>
+            <th>unit</th>
+            <th>title</th>
+            <th>description</th>
+            <th>status</th>
+            <th>created_at</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for request in maintenance_requests %}
+        <tr>
+            <td>{{ request.tenant }}</td>
+            <td>{{ request.unit }}</td>
+            <td>{{ request.title }}</td>
+            <td>{{ request.description }}</td>
+            <td>{{ request.status }}</td>
+            <td>{{ request.created_at }}</td>
+            <td>
+                <a href="{% url 'edit_MaintenanceRequest_page' request.id %}" class="btn btn-warning btn-sm">Edit</a>
+                |
+                <a href="{% url 'delete_MaintenanceRequest' request.id %}"class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">No maintenance requests found.</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<!-- Maintenance Request Modal -->
+<div class="modal fade" id="maintenanceRequestModal" tabindex="-1"> 
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="maintenanceRequestModalLabel">Add Maintenance Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'add_MaintenanceRequest_page' %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Save Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

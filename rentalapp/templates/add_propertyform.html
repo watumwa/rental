@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal">
+    Add Property
+</button>
+
+<br><br>
+
+<hr>
+
+<h2>Property List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Property Type</th>
+            <th>Description</th>
+            <th>Total Units</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for p in property %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.names }}</td>
+            <td>{{ p.address }}</td>
+            <td>{{ p.property_type }}</td>
+            <td>{{ p.description }}</td>
+            <td>{{ p.total_units}}</td>
+            <td>{{ p.created_at}}</td>
+            <td>
+                <a href="{% url 'edit_property_page' p.id %}" class="btn btn-warning btn-sm">Edit</a>
+                |
+                <a href="{% url 'delete_property' p.id %}"class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="9">No properties found.</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+<!-- Property Modal -->
+<div class="modal fade" id="propertyModal" tabindex="-1" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="propertyModalLabel">Add Property</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'add_property_page' %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Save Property</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

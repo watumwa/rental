@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<h2>Edit Complaint</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Complaint</button>
+    <a href="{% url 'add_Complaint_page' %}">Cancel</a>
+</form>
+{% endblock content %}

@@ -1,0 +1,70 @@
+{% extends 'index.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#complaintModal">
+        Add Complaint
+    </button>
+
+    <br><br>
+
+    <h2>Complaint List</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>tenant</th>
+                <th>subject</th>
+                <th>message</th>
+                <th>status</th>
+                <th>created_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for complaint in complaints %}
+            <tr>
+                <td>{{ complaint.tenant }}</td>
+                <td>{{ complaint.subject }}</td>
+                <td>{{ complaint.message }}</td>
+                <td>{{ complaint.status }}</td>
+                <td>{{ complaint.created_at }}</td>
+                <td>
+                    <a href="{% url 'edit_Complaint_page' complaint.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    |
+                    <a href="{% url 'delete_complaint' complaint.id %}"class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No complaints found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Complaint Modal -->
+    <div class="modal fade" id="complaintModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="complaintModalLabel">Add Complaint</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'add_Complaint_page' %}">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-success">Submit Complaint</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

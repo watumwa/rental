@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load rental_tags %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><span class="eyebrow">{{ today|date:'l, d F Y' }}</span><h1>Property performance</h1><p>Here’s what needs your attention across the portfolio today.</p></div>
+  <div class="page-actions"><a href="{% url 'payment_create' %}" class="btn btn-primary"><i class="ph ph-plus"></i> Record payment</a><button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#quickActions"><i class="ph ph-lightning"></i> Quick actions</button></div>
+</div>
+
+<section class="kpi-grid" aria-label="Portfolio performance">
+  <article class="kpi-card"><div class="kpi-top"><span>Properties</span><span class="kpi-icon green"><i class="ph ph-buildings"></i></span></div><strong>{{ properties_count }}</strong><small><i class="ph ph-stack"></i> {{ total_units }} managed units</small></article>
+  <article class="kpi-card"><div class="kpi-top"><span>Occupancy</span><span class="kpi-icon blue"><i class="ph ph-key"></i></span></div><strong>{{ occupancy_rate }}%</strong><small>{{ occupied_units }} of {{ total_units }} units occupied</small></article>
+  <article class="kpi-card"><div class="kpi-top"><span>Rent collected</span><span class="kpi-icon violet"><i class="ph ph-trend-up"></i></span></div><strong>{{ collected_rent|ugx }}</strong><small>{{ collection_rate }}% of {{ expected_rent|ugx }} expected</small></article>
+  <article class="kpi-card attention"><div class="kpi-top"><span>Outstanding</span><span class="kpi-icon red"><i class="ph ph-warning"></i></span></div><strong>{{ outstanding|ugx }}</strong><small>{{ affected_tenants }} tenant{{ affected_tenants|pluralize }} affected</small></article>
+</section>
+
+<section class="dashboard-grid primary-grid">
+  <article class="panel collection-panel">
+    <div class="panel-head"><div><span class="eyebrow">Rent collection</span><h2>This month’s performance</h2></div><a href="{% url 'payment_list' %}" class="text-link">View payments <i class="ph ph-arrow-right"></i></a></div>
+    <div class="collection-summary"><div><strong>{{ collected_rent|ugx }}</strong><span>collected</span></div><div class="text-end"><strong>{{ expected_rent|ugx }}</strong><span>expected</span></div></div>
+    <div class="progress-track"><span style="width: {{ collection_rate }}%"></span></div>
+    <div class="progress-meta"><span>{{ collection_rate }}% collected</span><span>{{ outstanding|ugx }} portfolio arrears</span></div>
+    <div class="bar-chart" aria-label="Six month collection trend">
+      {% for item in collection_trend %}<div class="bar-column"><div class="bar-value">{{ item.amount|ugx }}</div><div class="bar" style="height: {{ item.height }}%"></div><span>{{ item.label }}</span></div>{% endfor %}
+    </div>
+  </article>
+  <article class="panel occupancy-panel">
+    <div class="panel-head"><div><span class="eyebrow">Occupancy</span><h2>Unit availability</h2></div><a href="{% url 'unit_list' %}" class="text-link">Manage units</a></div>
+    <div class="donut-wrap">
+      <div class="donut" style="--value: {{ occupancy_rate }}"><div><strong>{{ occupancy_rate }}%</strong><span>occupied</span></div></div>
+      <div class="legend-list">
+        <div><span class="legend-dot occupied"></span><span>Occupied</span><strong>{{ occupied_units }}</strong></div>
+        <div><span class="legend-dot vacant"></span><span>Vacant</span><strong>{{ vacant_units }}</strong></div>
+        <div><span class="legend-dot maintenance"></span><span>Maintenance</span><strong>{{ maintenance_units }}</strong></div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section class="dashboard-grid secondary-grid">
+  <article class="panel">
+    <div class="panel-head"><div><span class="eyebrow">Arrears ageing</span><h2>Outstanding rent</h2></div><a href="{% url 'arrears' %}" class="text-link">Open arrears</a></div>
+    <div class="ageing-list">
+      {% for key, bucket in arrears_buckets.items %}<div class="ageing-row"><div><span>{{ bucket.label }}</span><strong>{{ bucket.amount|ugx }}</strong></div><div class="mini-track"><span class="age-{{ forloop.counter }}" style="width: {{ bucket.percentage }}%"></span></div></div>{% endfor %}
+    </div>
+  </article>
+  <article class="panel">
+    <div class="panel-head"><div><span class="eyebrow">Operations</span><h2>Maintenance requests</h2></div><a href="{% url 'maintenance_list' %}" class="text-link">View all</a></div>
+    <div class="maintenance-stats">
+      <div><span class="stat-badge new">{{ maintenance_counts.new }}</span><p>New</p></div>
+      <div><span class="stat-badge assigned">{{ maintenance_counts.assigned }}</span><p>Assigned</p></div>
+      <div><span class="stat-badge progress">{{ maintenance_counts.in_progress }}</span><p>In progress</p></div>
+      <div><span class="stat-badge parts">{{ maintenance_counts.awaiting_parts }}</span><p>Awaiting parts</p></div>
+      <div><span class="stat-badge done">{{ maintenance_counts.completed }}</span><p>Completed</p></div>
+    </div>
+    <a class="panel-action" href="{% url 'maintenance_list' %}#new"><i class="ph ph-plus-circle"></i> Log a maintenance request</a>
+  </article>
+  <article class="panel activity-panel">
+    <div class="panel-head"><div><span class="eyebrow">Live activity</span><h2>Recent updates</h2></div></div>
+    <div class="activity-list">
+      {% for item in recent_activity %}<a href="{{ item.url }}" class="activity-row"><span class="activity-icon {{ item.tone }}"><i class="ph {{ item.icon }}"></i></span><span><strong>{{ item.title }}</strong><small>{{ item.detail }}</small></span><time>{{ item.time|date:'H:i' }}</time></a>{% empty %}<div class="empty-state compact"><i class="ph ph-clock"></i><span>Activity will appear here.</span></div>{% endfor %}
+    </div>
+  </article>
+</section>
+
+{% if expiring_leases %}<section class="panel expiry-panel"><div class="panel-head"><div><span class="eyebrow">Coming up</span><h2>Leases expiring within 45 days</h2></div><a href="{% url 'lease_list' %}?status=expiring" class="text-link">Review renewals</a></div><div class="expiry-grid">{% for lease in expiring_leases %}<a href="{% url 'lease_detail' lease.pk %}" class="expiry-card"><span class="date-tile"><strong>{{ lease.end_date|date:'d' }}</strong><small>{{ lease.end_date|date:'M' }}</small></span><span><strong>{{ lease.tenant }}</strong><small>{{ lease.unit.property }} · {{ lease.unit.unit_number }}</small></span><i class="ph ph-caret-right"></i></a>{% endfor %}</div></section>{% endif %}
+
+<div class="modal fade" id="quickActions" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><div><span class="eyebrow">Create</span><h2 class="modal-title">Quick actions</h2></div><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="quick-grid"><a href="{% url 'payment_create' %}"><i class="ph ph-wallet"></i><span>Record payment</span></a><a href="{% url 'tenant_list' %}#new"><i class="ph ph-user-plus"></i><span>Add tenant</span></a><a href="{% url 'property_list' %}#new"><i class="ph ph-buildings"></i><span>Add property</span></a><a href="{% url 'maintenance_list' %}#new"><i class="ph ph-wrench"></i><span>Maintenance</span></a><a href="{% url 'expense_list' %}#new"><i class="ph ph-receipt"></i><span>Expense</span></a></div></div></div></div></div>
+{% endblock %}

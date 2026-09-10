@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
+    Add Payment
+</button>
+
+<br><br>
+
+<h2>Payment List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+
+
+            <th>amount</th>
+            <th>payment_date</th>
+            <th>payment_method</th>
+            <th>reference</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for payment in payments %}
+        <tr>
+
+            <td>{{payment.amount}}</td>
+            <td>{{payment.payment_date}}</td>
+            <td>{{payment.payment_method}}</td>
+            <td>{{payment.reference}}</td>
+            <td>
+                <a href="{% url 'edit_Payment_page' payment.id %}">Edit</a>
+            <td>
+            <td>
+                <a href="{% url 'delete_Payment' payment.id %}">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No payment records found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Add Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'add_Payment_page' %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Save Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

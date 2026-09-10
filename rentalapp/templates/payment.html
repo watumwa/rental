@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f4f4f4;
+        }
+
+        header{
+            background:#0d6efd;
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
+
+        nav{
+            background:#084298;
+            padding:15px;
+            text-align:center;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            margin:15px;
+            font-weight:bold;
+        }
+
+        nav a:hover{
+            color:yellow;
+        }
+
+        .container{
+            width:90%;
+            max-width:550px;
+            background:white;
+            margin:40px auto;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 5px 15px rgba(0,0,0,.2);
+        }
+
+        h2{
+            text-align:center;
+            color:#0d6efd;
+            margin-bottom:20px;
+        }
+
+        label{
+            display:block;
+            margin-top:15px;
+            font-weight:bold;
+        }
+
+        input, select{
+            width:100%;
+            padding:12px;
+            margin-top:5px;
+            border:1px solid #ccc;
+            border-radius:5px;
+            font-size:15px;
+        }
+
+        .btn{
+            width:100%;
+            background:#0d6efd;
+            color:white;
+            border:none;
+            padding:14px;
+            margin-top:25px;
+            border-radius:5px;
+            cursor:pointer;
+            font-size:17px;
+        }
+
+        .btn:hover{
+            background:#084298;
+        }
+
+        footer{
+            background:#222;
+            color:white;
+            text-align:center;
+            padding:15px;
+            margin-top:40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Rental Management System</h1>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="properties.html">Properties</a>
+    <a href="booking.html">Booking</a>
+    <a href="payment.html">Payment</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<div class="container">
+
+<h2>Rental Payment</h2>
+
+<form>
+
+<label>Tenant Name</label>
+<input type="text" placeholder="Enter your full name" required>
+
+<label>Email Address</label>
+<input type="email" placeholder="Enter your email" required>
+
+<label>Phone Number</label>
+<input type="tel" placeholder="Enter your phone number" required>
+
+<label>Property ID</label>
+<input type="text" placeholder="Enter property ID" required>
+
+<label>Amount (UGX)</label>
+<input type="number" placeholder="Enter payment amount" required>
+
+<label>Payment Method</label>
+<select required>
+    <option value="">Select Payment Method</option>
+    <option>Mobile Money</option>
+    <option>Bank Transfer</option>
+    <option>Credit Card</option>
+    <option>Debit Card</option>
+    <option>Cash</option>
+</select>
+
+<label>Transaction Reference</label>
+<input type="text" placeholder="Enter transaction reference">
+
+<button type="submit" class="btn">Pay Now</button>
+
+</form>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Rental Management System | All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

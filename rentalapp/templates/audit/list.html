@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% load rental_tags %}
+{% block title %}Audit logs{% endblock %}
+{% block content %}
+<div class="page-header"><div><span class="eyebrow">Administration</span><h1>Audit logs</h1><p>Immutable operational history for important property and financial actions.</p></div></div>
+<div class="data-card"><div class="table-responsive"><table class="table"><thead><tr><th>Date &amp; time</th><th>User</th><th>Action</th><th>Object</th><th>Change</th><th>IP</th></tr></thead><tbody>{% for log in logs %}<tr><td>{{ log.created_at|date:'d M Y, H:i:s' }}</td><td>{% if log.actor %}{{ log.actor.get_full_name|default:log.actor.username }}{% else %}System{% endif %}</td><td><span class="status-pill info">{{ log.action }}</span></td><td><strong>{{ log.object_label }}</strong><small class="d-block text-muted">{{ log.object_type }} #{{ log.object_id }}</small></td><td class="audit-values">{% if log.old_value %}{{ log.old_value }} → {% endif %}{{ log.new_value|default:'—' }}</td><td>{{ log.ip_address|default:'—' }}</td></tr>{% empty %}<tr><td colspan="6"><div class="empty-state"><i class="ph ph-clock-counter-clockwise"></i><strong>No audit events yet</strong><span>Important create, payment and void actions appear here.</span></div></td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}

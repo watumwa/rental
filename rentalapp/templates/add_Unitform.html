@@ -1,0 +1,69 @@
+{% extends 'index.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#unitModal">
+    Add Unit
+</button>
+
+<br><br>
+
+<h2>Unit List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>property</th>
+            <th>unit_number</th>
+            <th>rent_amount</th>
+            <th>is_occupied</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for unit in units %}
+        <tr>
+            <td>{{ unit.propertyy }}</td>
+            <td>{{ unit.unit_number }}</td>
+            <td>{{ unit.rent_amount }}</td>
+            <td>{{ unit.is_occupied }}</td>
+            <td>
+                <a href="{% url 'edit_Unit_page' unit.id %}">Edit</a>
+                |
+                <a href="{% url 'delete_unit' unit.id %}">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No units available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+<!-- Unit Modal -->
+<div class="modal fade" id="unitModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unitModalLabel">Add Unit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'add_Unit_page' %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Save Unit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

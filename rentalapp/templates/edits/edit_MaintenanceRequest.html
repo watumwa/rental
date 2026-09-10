@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h2>Edit Maintenance Request</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit">Update Request</button>
+    <a href="{% url 'add_MaintenanceRequest_page' %}">Cancel</a>
+</form>
+{% endblock content %}

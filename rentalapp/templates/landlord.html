@@ -1,0 +1,123 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Landlord</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f4f4;
+            margin:40px;
+        }
+
+        .container{
+            width:85%;
+            margin:auto;
+            background:#fff;
+            padding:20px;
+            border-radius:8px;
+            box-shadow:0 0 10px rgba(0,0,0,0.2);
+        }
+
+        h2{
+            text-align:center;
+            color:#333;
+        }
+
+        button{
+            background:#007BFF;
+            color:white;
+            border:none;
+            padding:10px 20px;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#0056b3;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:30px;
+        }
+
+        table, th, td{
+            border:1px solid #ddd;
+        }
+
+        th{
+            background:#007BFF;
+            color:white;
+        }
+
+        th, td{
+            padding:10px;
+            text-align:left;
+        }
+
+        tr:nth-child(even){
+            background:#f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Landlord Registration Form</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form|crispy }}
+
+        <button type="submit">Save Landlord</button>
+    </form>
+
+    <hr>
+
+    <h2>Landlord List</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>user</th>
+                <th>phone</th>
+                <th>national_id</th>
+                <th>address</th>
+                <th>email</th>
+                <th>occupation</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for landlord in landlords %}
+        <tr>
+            <td>{{ landlord.use}}</td>
+            <td>{{ landlord.phone }}</td>
+            <td>{{ landlord.national_id }}</td>
+            <td>{{ landlord.address }}</td>
+            <td>{{ landlord.email }}</td>
+            <td>{{ landlord.occupation }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align:center;">
+                No landlords found.
+            </td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

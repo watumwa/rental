@@ -1,0 +1,128 @@
+{% load static rental_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#16382e">
+  <meta name="description" content="RentPro property operations and rental management">
+  <title>{% block title %}RentPro{% endblock %} · Property Management</title>
+  <link rel="icon" href="{% static 'assets/images/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'assets/css/plugins/phosphor-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/rentpro.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="app-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="mainSidebar" aria-label="Primary navigation">
+      <div class="sidebar-brand">
+        <a href="{{ workspace_home_url }}" class="brand-mark" aria-label="RentPro home">R</a>
+        <div><a href="{{ workspace_home_url }}" class="brand-name">RentPro</a><span>Property Management</span></div>
+        <button class="btn-close btn-close-white ms-auto d-lg-none" type="button" data-bs-dismiss="offcanvas" data-bs-target="#mainSidebar" aria-label="Close"></button>
+      </div>
+      <nav class="sidebar-nav">
+        {% if workspace_role == 'tenant' %}
+        <div class="nav-group">
+          <span class="nav-caption">Tenant portal</span>
+          <a href="{% url 'tenant_portal' %}" class="nav-link active"><i class="ph ph-house-user"></i><span>My tenancy</span></a>
+        </div>
+        {% elif workspace_role == 'landlord' %}
+        <div class="nav-group">
+          <span class="nav-caption">Landlord portal</span>
+          <a href="{% url 'landlord_portal' %}" class="nav-link active"><i class="ph ph-buildings"></i><span>My portfolio</span></a>
+        </div>
+        {% else %}
+        <div class="nav-group">
+          <span class="nav-caption">Main</span>
+          <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"><i class="ph ph-squares-four"></i><span>Dashboard</span></a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-caption">Property</span>
+          <a href="{% url 'property_list' %}" class="nav-link {% if 'property' in request.resolver_match.url_name %}active{% endif %}"><i class="ph ph-buildings"></i><span>Properties</span></a>
+          <a href="{% url 'unit_list' %}" class="nav-link {% if 'unit' in request.resolver_match.url_name %}active{% endif %}"><i class="ph ph-door"></i><span>Buildings &amp; Units</span></a>
+          <a href="{% url 'portfolio_setup' %}" class="nav-link {% if request.resolver_match.url_name == 'portfolio_setup' %}active{% endif %}"><i class="ph ph-sliders-horizontal"></i><span>Portfolio Setup</span></a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-caption">Tenancy</span>
+          <a href="{% url 'tenant_list' %}" class="nav-link {% if 'tenant' in request.resolver_match.url_name %}active{% endif %}"><i class="ph ph-users-three"></i><span>Tenants</span></a>
+          <a href="{% url 'lease_list' %}" class="nav-link {% if 'lease' in request.resolver_match.url_name %}active{% endif %}"><i class="ph ph-file-text"></i><span>Leases</span></a>
+          <a href="{% url 'application_list' %}" class="nav-link {% if 'application' in request.resolver_match.url_name %}active{% endif %}"><i class="ph ph-clipboard-text"></i><span>Applications</span></a>
+          <a href="{% url 'notice_list' %}" class="nav-link {% if request.resolver_match.url_name == 'notice_list' %}active{% endif %}"><i class="ph ph-envelope-open"></i><span>Notices</span></a>
+          <a href="{% url 'amendment_list' %}" class="nav-link {% if 'amendment' in request.resolver_match.url_name %}active{% endif %}"><i class="ph ph-note-pencil"></i><span>Amendments</span></a>
+          <a href="{% url 'unit_list' %}?status=available" class="nav-link"><i class="ph ph-house-line"></i><span>Vacancies</span></a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-caption">Finance</span>
+          <a href="{% url 'payment_list' %}" class="nav-link {% if request.resolver_match.url_name == 'payment_list' or request.resolver_match.url_name == 'receipt_detail' %}active{% endif %}"><i class="ph ph-wallet"></i><span>Payments</span></a>
+          <a href="{% url 'arrears' %}" class="nav-link {% if request.resolver_match.url_name == 'arrears' %}active{% endif %}"><i class="ph ph-warning-circle"></i><span>Arrears</span></a>
+          <a href="{% url 'deposit_list' %}" class="nav-link {% if request.resolver_match.url_name == 'deposit_list' %}active{% endif %}"><i class="ph ph-vault"></i><span>Deposits</span></a>
+          <a href="{% url 'reconciliation_list' %}" class="nav-link {% if request.resolver_match.url_name == 'reconciliation_list' %}active{% endif %}"><i class="ph ph-arrows-left-right"></i><span>Reconciliation</span></a>
+          <a href="{% url 'expense_list' %}" class="nav-link {% if request.resolver_match.url_name == 'expense_list' %}active{% endif %}"><i class="ph ph-receipt"></i><span>Expenses</span></a>
+          <a href="{% url 'owner_statement_list' %}" class="nav-link {% if 'owner_statement' in request.resolver_match.url_name %}active{% endif %}"><i class="ph ph-hand-coins"></i><span>Owner Statements</span></a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-caption">Operations</span>
+          <a href="{% url 'maintenance_list' %}" class="nav-link {% if request.resolver_match.url_name == 'maintenance_list' %}active{% endif %}"><i class="ph ph-wrench"></i><span>Maintenance</span></a>
+          <a href="{% url 'inspection_list' %}" class="nav-link {% if 'inspection' in request.resolver_match.url_name %}active{% endif %}"><i class="ph ph-clipboard"></i><span>Inspections</span></a>
+          <a href="{% url 'utility_list' %}" class="nav-link {% if request.resolver_match.url_name == 'utility_list' %}active{% endif %}"><i class="ph ph-gauge"></i><span>Utilities &amp; Meters</span></a>
+          <a href="{% url 'document_list' %}" class="nav-link {% if request.resolver_match.url_name == 'document_list' %}active{% endif %}"><i class="ph ph-folder"></i><span>Documents</span></a>
+          <a href="{% url 'communication_list' %}" class="nav-link {% if request.resolver_match.url_name == 'communication_list' %}active{% endif %}"><i class="ph ph-chats"></i><span>Communications</span></a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-caption">Reports &amp; Admin</span>
+          <a href="{% url 'reports' %}" class="nav-link {% if request.resolver_match.url_name == 'reports' %}active{% endif %}"><i class="ph ph-chart-bar"></i><span>Financial Reports</span></a>
+          <a href="{% url 'audit_logs' %}" class="nav-link {% if request.resolver_match.url_name == 'audit_logs' %}active{% endif %}"><i class="ph ph-clock-counter-clockwise"></i><span>Audit Logs</span></a>
+        </div>
+        {% endif %}
+      </nav>
+      <div class="sidebar-help">
+        <div class="help-icon"><i class="ph ph-shield-check"></i></div>
+        <strong>Records protected</strong>
+        <span>Receipts and payments stay in the audit trail.</span>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-topbar">
+        <button class="icon-button d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainSidebar" aria-controls="mainSidebar"><i class="ph ph-list"></i><span class="visually-hidden">Open menu</span></button>
+        {% if workspace_role != 'tenant' and workspace_role != 'landlord' %}<form class="global-search" action="{% url 'global_search' %}" method="get" role="search">
+          <i class="ph ph-magnifying-glass"></i>
+          <input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Search tenant, unit, receipt or property…" aria-label="Global search">
+          <kbd>⌘ K</kbd>
+        </form>{% endif %}
+        <div class="topbar-actions">
+          <div class="dropdown">
+            <button class="icon-button notification-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
+              <i class="ph ph-bell"></i>{% if workspace_notification_count %}<span>{{ workspace_notification_count }}</span>{% endif %}
+            </button>
+            <div class="dropdown-menu dropdown-menu-end notification-menu">
+              <div class="dropdown-header"><strong>Notifications</strong><span>{{ workspace_notification_count }} unread</span></div>
+              {% for notification in workspace_notifications %}
+                <a href="{{ notification.link|default:'#' }}" class="notification-row"><span class="status-dot {{ notification.level }}"></span><span>{{ notification.message }}<small>{{ notification.created_at|timesince }} ago</small></span></a>
+              {% empty %}<div class="empty-mini">You're all caught up.</div>{% endfor %}
+            </div>
+          </div>
+          <div class="user-chip">
+            <span class="avatar">{% if request.user.is_authenticated %}{{ request.user.get_full_name|default:request.user.username|initials }}{% else %}PM{% endif %}</span>
+            <span class="d-none d-md-flex"><strong>{% if request.user.is_authenticated %}{{ request.user.get_full_name|default:request.user.username }}{% else %}Property Manager{% endif %}</strong><small>{{ workspace_role|default:'Operations'|title }}</small></span>
+          </div>
+          {% if request.user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="icon-button" type="submit" title="Sign out"><i class="ph ph-sign-out"></i><span class="visually-hidden">Sign out</span></button></form>{% endif %}
+        </div>
+      </header>
+
+      <main class="app-content">
+        {% if messages %}
+          <div class="message-stack" aria-live="polite">
+            {% for message in messages %}<div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>{% endfor %}
+          </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  <script src="{% static 'assets/js/plugins/bootstrap.min.js' %}"></script>
+  <script src="{% static 'assets/js/rentpro.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

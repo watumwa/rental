@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#brokerModal">
+    Add Broker
+</button>
+
+<br><br>
+
+<h2>Broker List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>user</th>
+            <th>phone</th>
+            <th>email</th>
+            <th>national_id</th>
+            <th>address</th>
+            <th>commission-rate</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for broker in brokers %}
+        <tr>
+            <td>{{ broker.user }}</td>
+            <td>{{ broker.phone }}</td>
+            <td>{{ broker.email }}</td>
+            <td>{{ broker.national_id }}</td>
+            <td>{{ broker.address }}</td>
+            <td>{{ broker.commission_rate }}</td>
+            <td>
+                <a href="{% url 'edit_broker_page' broker.id %}" class="btn btn-warning btn-sm">Edit</a>
+                |
+                <a href="{% url 'delete_broker' broker.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="7">No brokers found.</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+<!-- Broker Modal -->
+<div class="modal fade" id="brokerModal" tabindex="-1" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="brokerModalLabel">Add Broker</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'add_broker_page' %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Save Broker</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

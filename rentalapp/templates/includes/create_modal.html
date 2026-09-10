@@ -1,0 +1,14 @@
+<div class="modal fade" id="{{ modal_id }}" tabindex="-1" aria-labelledby="{{ modal_id }}Label" aria-hidden="true" data-create-modal {% if form.errors %}data-form-invalid="true"{% endif %}>
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div><span class="eyebrow">{{ eyebrow|default:'New record' }}</span><h2 class="modal-title" id="{{ modal_id }}Label">{{ modal_title }}</h2></div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post" action="{{ form_action|default:request.path }}">
+        <div class="modal-body"><div class="form-grid">{% csrf_token %}{% include 'includes/form_fields.html' %}</div></div>
+        <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">{{ submit_label|default:'Save record' }}</button></div>
+      </form>
+    </div>
+  </div>
+</div>

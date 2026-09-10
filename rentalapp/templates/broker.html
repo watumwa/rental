@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Broker Registration</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f2f2f2;
+}
+
+header{
+    background:#0d6efd;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+nav{
+    background:#084298;
+    padding:15px;
+    text-align:center;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin:15px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:yellow;
+}
+
+.container{
+    width:90%;
+    max-width:650px;
+    background:white;
+    margin:40px auto;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+h2{
+    text-align:center;
+    color:#0d6efd;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+input, select, textarea{
+    width:100%;
+    padding:12px;
+    margin-top:5px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:15px;
+}
+
+textarea{
+    resize:none;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:25px;
+    background:#0d6efd;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:17px;
+}
+
+button:hover{
+    background:#084298;
+}
+
+footer{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin-top:40px;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+    <h1>Rental Management System</h1>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="properties.html">Properties</a>
+    <a href="booking.html">Booking</a>
+    <a href="broker.html">Broker</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<div class="container">
+
+<h2>Broker Registration Form</h2>
+
+<form>
+
+<label>Broker Full Name</label>
+<input type="text" placeholder="Enter full name" required>
+
+<label>Email Address</label>
+<input type="email" placeholder="Enter email address" required>
+
+<label>Phone Number</label>
+<input type="tel" placeholder="Enter phone number" required>
+
+<label>National ID Number</label>
+<input type="text" placeholder="Enter National ID Number" required>
+
+<label>Gender</label>
+<select required>
+    <option value="">Select Gender</option>
+    <option>Male</option>
+    <option>Female</option>
+</select>
+
+<label>Years of Experience</label>
+<input type="number" placeholder="Enter years of experience">
+
+<label>Area of Operation</label>
+<input type="text" placeholder="e.g. Kampala, Wakiso, Mukono">
+
+<label>Office Address</label>
+<textarea rows="4" placeholder="Enter office address"></textarea>
+
+<label>Commission Rate (%)</label>
+<input type="number" placeholder="Enter commission percentage">
+
+<button type="submit">Register Broker</button>
+
+</form>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Rental Management System | All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

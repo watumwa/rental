@@ -1,0 +1,71 @@
+{% extends 'index.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tenantModal">
+    Add Tenant
+</button>
+
+<br><br>
+
+<hr>
+
+<h2>Tenant List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>user</th>
+            <th>phone</th>
+            <th>national_id</th>
+            <th>emergency_contact</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for tenant in tenants %}
+        <tr>
+            <td>{{ tenant.user_name }}</td>
+            <td>{{ tenant.phone }}</td>
+            <td>{{ tenant.national_id }}</td>
+            <td>{{ tenant.emergency_contact }}</td>
+            <td>
+                <a href="{% url 'edit_Tenant_page' tenant.id %}"class="btn btn-warning btn-sm">Edit</a>
+                |
+                <a href="{% url 'delete_tenant' tenant.id %}"class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No tenants found.</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<!-- Tenant Modal -->
+<div class="modal fade" id="tenantModal" tabindex="-1" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tenantModalLabel">Add Tenant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'add_Tenant_page' %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Save Tenant</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

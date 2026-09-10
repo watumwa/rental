@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Page</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f5f5f5;
+        }
+
+        header{
+            background:#0d6efd;
+            color:white;
+            padding:20px;
+            text-align:center;
+        }
+
+        nav{
+            background:#084298;
+            padding:15px;
+            text-align:center;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            margin:15px;
+            font-weight:bold;
+        }
+
+        nav a:hover{
+            color:yellow;
+        }
+
+        .hero{
+            background:#0d6efd;
+            color:white;
+            text-align:center;
+            padding:60px;
+        }
+
+        .container{
+            width:90%;
+            max-width:600px;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 5px 15px rgba(0,0,0,.2);
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:20px;
+            color:#0d6efd;
+        }
+
+        label{
+            display:block;
+            margin-top:15px;
+            font-weight:bold;
+        }
+
+        input, select, textarea{
+            width:100%;
+            padding:12px;
+            margin-top:5px;
+            border:1px solid #ccc;
+            border-radius:6px;
+            font-size:15px;
+        }
+
+        textarea{
+            resize:none;
+        }
+
+        .btn{
+            width:100%;
+            padding:14px;
+            margin-top:25px;
+            background:#0d6efd;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:18px;
+        }
+
+        .btn:hover{
+            background:#084298;
+        }
+
+        footer{
+            background:#222;
+            color:white;
+            text-align:center;
+            padding:15px;
+            margin-top:40px;
+        }
+    </style>
+
+</head>
+<body>
+
+<header>
+    <h1>Rental Management System</h1>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="properties.html">Properties</a>
+    <a href="booking.html">Booking</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<section class="hero">
+    <h2>Book Your Property Today</h2>
+    <p>Fill in the form below to reserve your preferred property.</p>
+</section>
+
+<div class="container">
+
+<h2>Booking Form</h2>
+
+<form>
+
+<label>Full Name</label>
+<input type="text" placeholder="Enter your full name" required>
+
+<label>Email Address</label>
+<input type="email" placeholder="Enter your email" required>
+
+<label>Phone Number</label>
+<input type="tel" placeholder="Enter your phone number" required>
+
+<label>Select Property</label>
+<select required>
+    <option value="">Choose Property</option>
+    <option>Apartment</option>
+    <option>Single Room</option>
+    <option>Double Room</option>
+    <option>Studio</option>
+    <option>Office Space</option>
+</select>
+
+<label>Check-in Date</label>
+<input type="date" required>
+
+<label>Check-out Date</label>
+<input type="date" required>
+
+<label>Number of Guests</label>
+<input type="number" min="1" max="10" required>
+
+<label>Special Requests</label>
+<textarea rows="4" placeholder="Write any special requests..."></textarea>
+
+<button class="btn" type="submit">Book Now</button>
+
+</form>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Rental Management System. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
+
+
