@@ -30,7 +30,7 @@ DEBUG = os.environ.get("RENTAL_DEBUG", "1").lower() in ("1", "true", "yes")
 
 ALLOWED_HOSTS = [
     host.strip()
-    for host in os.environ.get("RENTAL_ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",")
+    for host in os.environ.get("RENTAL_ALLOWED_HOSTS", "*","localhost,127.0.0.1,testserver").split(",")
     if host.strip()
 ]
 CSRF_TRUSTED_ORIGINS = [
