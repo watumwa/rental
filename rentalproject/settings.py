@@ -12,8 +12,16 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Local environment files are optional. Deployed environments provide these
+# values directly, and take precedence over files because override is disabled.
+load_dotenv(BASE_DIR / ".env.local")
+load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,7 +38,10 @@ DEBUG = os.environ.get("RENTAL_DEBUG", "1").lower() in ("1", "true", "yes")
 
 ALLOWED_HOSTS = [
     host.strip()
-    for host in os.environ.get("RENTAL_ALLOWED_HOSTS", "*").split(",")
+    for host in os.environ.get(
+        "RENTAL_ALLOWED_HOSTS",
+        "localhost,127.0.0.1,testserver,.vercel.app",
+    ).split(",")
     if host.strip()
 ]
 CSRF_TRUSTED_ORIGINS = [
@@ -88,16 +99,27 @@ WSGI_APPLICATION = 'rentalproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('RENTAL_DB_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('RENTAL_DB_NAME', BASE_DIR / 'db.sqlite3'),
-        'USER': os.environ.get('RENTAL_DB_USER', ''),
-        'PASSWORD': os.environ.get('RENTAL_DB_PASSWORD', ''),
-        'HOST': os.environ.get('RENTAL_DB_HOST', ''),
-        'PORT': os.environ.get('RENTAL_DB_PORT', ''),
+DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=int(os.environ.get("RENTAL_DB_CONN_MAX_AGE", "60")),
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('RENTAL_DB_ENGINE', 'django.db.backends.sqlite3'),
+            'NAME': os.environ.get('RENTAL_DB_NAME', BASE_DIR / 'db.sqlite3'),
+            'USER': os.environ.get('RENTAL_DB_USER', ''),
+            'PASSWORD': os.environ.get('RENTAL_DB_PASSWORD', ''),
+            'HOST': os.environ.get('RENTAL_DB_HOST', ''),
+            'PORT': os.environ.get('RENTAL_DB_PORT', ''),
+        }
+    }
 
 
 # Password validation

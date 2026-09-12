@@ -1,1 +1,5 @@
 /staticfiles/
+.env
+.env.*
+!.env.example
+.vercel/

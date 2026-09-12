@@ -81,10 +81,12 @@ RENTAL_ALLOWED_HOSTS='rent.example.com' \
 
 | Variable | Purpose | Development default |
 |---|---|---|
+| `DATABASE_URL` | Neon/PostgreSQL connection string; takes precedence over the legacy database fields below | Empty (uses SQLite) |
 | `RENTAL_SECRET_KEY` | Django signing secret | Unsafe development-only value |
 | `RENTAL_DEBUG` | Enables Django debug mode | `1` |
-| `RENTAL_ALLOWED_HOSTS` | Comma-separated host names | `localhost,127.0.0.1,testserver` |
+| `RENTAL_ALLOWED_HOSTS` | Comma-separated host names | `localhost,127.0.0.1,testserver,.vercel.app` |
 | `RENTAL_CSRF_TRUSTED_ORIGINS` | Comma-separated HTTPS origins | Empty |
+| `RENTAL_DB_CONN_MAX_AGE` | Maximum lifetime of a persistent PostgreSQL connection, in seconds | `60` |
 | `RENTAL_DB_ENGINE` | Django database backend | SQLite |
 | `RENTAL_DB_NAME` | Database name or SQLite path | `db.sqlite3` |
 | `RENTAL_DB_USER` | Database user | Empty |
@@ -95,6 +97,39 @@ RENTAL_ALLOWED_HOSTS='rent.example.com' \
 | `RENTAL_HSTS_SECONDS` | Production HSTS duration | `31536000` |
 
 Use PostgreSQL, HTTPS, encrypted backups and restricted media storage for production. Do not commit production credentials or identity/lease documents.
+
+### Connect Neon on Vercel
+
+1. On the Neon integration page, select **Connect to Project** and choose the RentPro Vercel project. Leave the custom variable prefix empty so the integration creates `DATABASE_URL`. Connect Production; only connect Preview if it uses an isolated Neon branch or preview data may safely share the production database.
+2. In the Vercel project's **Settings → Environment Variables**, confirm that the integration added `DATABASE_URL` and `DATABASE_URL_UNPOOLED`.
+3. Add these application variables to Production:
+
+   ```text
+   RENTAL_DEBUG=0
+   RENTAL_ALLOWED_HOSTS=.vercel.app
+   RENTAL_CSRF_TRUSTED_ORIGINS=https://*.vercel.app
+   RENTAL_DB_CONN_MAX_AGE=60
+   RENTAL_SECURE_SSL_REDIRECT=1
+   ```
+
+   Add the exact custom hostname to `RENTAL_ALLOWED_HOSTS` and its full HTTPS origin to `RENTAL_CSRF_TRUSTED_ORIGINS` when using a custom domain.
+
+4. Generate a unique `RENTAL_SECRET_KEY`, store it as a sensitive Production variable, and do not paste it into source control:
+
+   ```bash
+   python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+   ```
+
+5. Redeploy after saving the variables. Environment changes do not affect deployments that already exist.
+6. Pull the connected environment into the ignored `.env.local` file and initialize the empty Neon database once:
+
+   ```bash
+   vercel env pull .env.local --environment=production
+   python3 manage.py migrate
+   python3 manage.py createsuperuser
+   ```
+
+For ordinary local SQLite development, copy `.env.example` to `.env.local` and leave `DATABASE_URL` empty.
 
 ## Integration boundary
 
