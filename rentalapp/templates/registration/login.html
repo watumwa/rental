@@ -1,2 +1,141 @@
 {% load static %}
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign in · RentPro</title><link rel="stylesheet" href="{% static 'assets/css/style.css' %}"><link rel="stylesheet" href="{% static 'assets/css/rentpro.css' %}"></head><body><main style="min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#0f2c25,#245b49)"><section class="detail-card" style="width:min(410px,100%);padding:28px"><div class="d-flex align-items-center gap-3 mb-4"><span class="brand-mark">R</span><div><h1 style="font-size:20px;margin:0;font-weight:750">Welcome to RentPro</h1><p class="text-muted mb-0" style="font-size:11px">Property operations &amp; rental management</p></div></div>{% if form.errors %}<div class="alert alert-danger">Your username or password was not recognised.</div>{% endif %}<form method="post">{% csrf_token %}<div class="mb-3"><label class="form-label" for="id_username">Username</label><input class="form-control" id="id_username" name="username" autofocus required></div><div class="mb-4"><label class="form-label" for="id_password">Password</label><input class="form-control" id="id_password" name="password" type="password" required></div><button class="btn btn-primary w-100" type="submit">Sign in</button><input type="hidden" name="next" value="{{ next }}"></form></section></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12392f">
+  <meta name="description" content="Sign in to RentPro property management">
+  <title>Sign in · RentPro</title>
+  <link rel="icon" href="{% static 'assets/images/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+</head>
+<body>
+  <a class="skip-link" href="#login-form">Skip to sign in</a>
+
+  <main class="login-layout">
+    <section class="login-visual" aria-labelledby="welcome-heading">
+      <div class="visual-orb visual-orb-one" aria-hidden="true"></div>
+      <div class="visual-orb visual-orb-two" aria-hidden="true"></div>
+
+      <a class="brand brand-light" href="{% url 'home' %}" aria-label="RentPro home">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span>
+          <strong>RentPro</strong>
+          <small>Property management</small>
+        </span>
+      </a>
+
+      <div class="visual-content">
+        <span class="eyebrow">Built for property teams</span>
+        <h1 id="welcome-heading">Run every property from one calm workspace.</h1>
+        <p>Stay on top of rent, leases, maintenance, and owner reporting without losing sight of the details.</p>
+
+        <ul class="feature-list" aria-label="RentPro features">
+          <li>
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 12.5 9.2 17 19 7"/></svg>
+            </span>
+            Live portfolio and occupancy visibility
+          </li>
+          <li>
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 12.5 9.2 17 19 7"/></svg>
+            </span>
+            Clear rent collection and audit trails
+          </li>
+          <li>
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 12.5 9.2 17 19 7"/></svg>
+            </span>
+            Faster maintenance follow-through
+          </li>
+        </ul>
+      </div>
+
+      <p class="visual-footer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2M6 10h12v10H6z"/></svg>
+        Secure access to your property workspace
+      </p>
+    </section>
+
+    <section class="login-panel" aria-labelledby="login-title">
+      <div class="login-container">
+        <a class="brand brand-mobile" href="{% url 'home' %}" aria-label="RentPro home">
+          <span class="brand-mark" aria-hidden="true">R</span>
+          <span>
+            <strong>RentPro</strong>
+            <small>Property management</small>
+          </span>
+        </a>
+
+        <div class="login-heading">
+          <span class="eyebrow">Welcome back</span>
+          <h2 id="login-title">Sign in to your account</h2>
+          <p>Enter your details to continue to your workspace.</p>
+        </div>
+
+        {% if form.errors %}
+          <div class="form-alert" role="alert">
+            <span class="alert-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 8v5m0 3.5v.01M10.3 4.4 2.7 18a2 2 0 0 0 1.75 3h15.1a2 2 0 0 0 1.75-3L13.7 4.4a2 2 0 0 0-3.4 0Z"/></svg>
+            </span>
+            <span><strong>We couldn’t sign you in.</strong> Check your username and password, then try again.</span>
+          </div>
+        {% endif %}
+
+        <form id="login-form" method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+
+          <div class="form-field">
+            <label for="id_username">Username</label>
+            <div class="input-shell {% if form.username.errors %}has-error{% endif %}">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg>
+              <input id="id_username" name="username" type="text" value="{{ form.username.value|default:'' }}" placeholder="Enter your username" autocomplete="username" autocapitalize="none" spellcheck="false" autofocus required>
+            </div>
+            {% for error in form.username.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+          </div>
+
+          <div class="form-field">
+            <label for="id_password">Password</label>
+            <div class="input-shell {% if form.password.errors %}has-error{% endif %}">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2M6 10h12v10H6z"/></svg>
+              <input id="id_password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+              <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">
+                <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+                <svg class="eye-closed" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 4 16 16M10.7 6.1A10.7 10.7 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-2.1 2.8M6.5 7.2C3.9 9 2.5 12 2.5 12s3.5 6 9.5 6c1.2 0 2.3-.2 3.3-.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+              </button>
+            </div>
+            {% for error in form.password.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+          </div>
+
+          <button class="submit-button" type="submit">
+            <span>Sign in</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+          </button>
+          <input type="hidden" name="next" value="{{ next }}">
+        </form>
+
+        <div class="login-help">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.4 2.4 0 0 1 4.65.8c0 1.7-2.45 2-2.45 3.7m0 3.1v.01"/></svg>
+          <p><strong>Having trouble signing in?</strong><br>Contact your RentPro administrator for access.</p>
+        </div>
+
+        <p class="copyright">&copy; {% now "Y" %} RentPro. Property operations, organised.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const passwordInput = document.querySelector('#id_password');
+    const passwordToggle = document.querySelector('.password-toggle');
+
+    passwordToggle?.addEventListener('click', () => {
+      const showing = passwordInput.type === 'text';
+      passwordInput.type = showing ? 'password' : 'text';
+      passwordToggle.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+      passwordToggle.setAttribute('aria-pressed', String(!showing));
+    });
+  </script>
+</body>
+</html>
