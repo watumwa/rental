@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
+from unittest.mock import patch
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
@@ -260,6 +261,12 @@ class AccessControlTests(TestCase):
         response = self.client.get(reverse("dashboard"))
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse("login"), response.url)
+
+    def test_login_does_not_query_notifications_for_anonymous_users(self):
+        with patch("rentalapp.context_processors.Notification.objects.filter") as notification_filter:
+            response = self.client.get(reverse("login"))
+        self.assertEqual(response.status_code, 200)
+        notification_filter.assert_not_called()
 
     def test_unassigned_viewer_cannot_open_staff_workspace(self):
         self.client.force_login(self.viewer)

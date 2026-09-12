@@ -120,12 +120,11 @@ Use PostgreSQL, HTTPS, encrypted backups and restricted media storage for produc
    python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
    ```
 
-5. Redeploy after saving the variables. Environment changes do not affect deployments that already exist.
-6. Pull the connected environment into the ignored `.env.local` file and initialize the empty Neon database once:
+5. Redeploy after saving the variables. The Vercel build hook in `pyproject.toml` automatically applies pending Django migrations whenever `DATABASE_URL` is available. Environment changes do not affect deployments that already exist.
+6. To create the first administrator or run management commands locally, pull the connected environment into the ignored `.env.local` file:
 
    ```bash
    vercel env pull .env.local --environment=production
-   python3 manage.py migrate
    python3 manage.py createsuperuser
    ```
 

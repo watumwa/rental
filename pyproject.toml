@@ -1,0 +1,15 @@
+[project]
+name = "rentpro"
+version = "0.1.0"
+description = "Property operations and rental management"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "Django==6.0.7",
+    "dj-database-url>=3.0,<4",
+    "psycopg[binary]>=3.2,<4",
+    "python-dotenv>=1.0,<2",
+]
+
+[tool.vercel.scripts]
+build = 'if [ -n "$DATABASE_URL" ]; then python manage.py migrate --noinput; fi'

@@ -27,14 +27,17 @@ load_dotenv(BASE_DIR / ".env")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
+IS_VERCEL = os.environ.get("VERCEL") == "1"
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    "RENTAL_SECRET_KEY",
-    "django-insecure-development-only-change-before-production",
-)
+SECRET_KEY = os.environ.get("RENTAL_SECRET_KEY", "").strip()
+if not SECRET_KEY:
+    if IS_VERCEL:
+        raise RuntimeError("RENTAL_SECRET_KEY must be configured for Vercel deployments.")
+    SECRET_KEY = "django-insecure-development-only-change-before-production"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("RENTAL_DEBUG", "1").lower() in ("1", "true", "yes")
+DEBUG = os.environ.get("RENTAL_DEBUG", "0" if IS_VERCEL else "1").lower() in ("1", "true", "yes")
 
 ALLOWED_HOSTS = [
     host.strip()
